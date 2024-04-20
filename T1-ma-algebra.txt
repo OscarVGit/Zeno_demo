@@ -1,0 +1,105 @@
+Task 1: Relational Database Queries – Relational Algebra (6 marks)
+Customer
+P *cust_no
+*cust_name
+*cust_street
+*cust_town
+*cust_pcode
+*cust_phone
+CUSTOMER currently owns VEHICLE
+CUSTOMER books SERVICE
+Vehicle
+P *veh_vin
+*veh_rego
+*veh_year
+*veh_make
+*Veh_model
+F *cust_no
+VEHICLE requires SERVICE
+Pay_Mode
+P *pay_mode_code
+*pay_mode_description
+PAY_MODE codes SERVICE
+SERVICE
+P *serv_no
+*serv_date
+*serv_drop_off
+*serv_req_pickup
+serv_ready_pickup
+*serv_kms
+serv_labour_cost
+serv_parts_cost
+*serv_instructions
+F *pay_mode_code
+F *veh_vin
+F *cust_no
+SERVICE consists of SERVICE_JOB
+SERVICE_JOB
+PF *serv_no
+P *sj_job_no
+*sj_task_description
+SERVICE_JOB incurs PART_CHARGE
+PART_CHARGE
+P *part_charge_no
+*pc_quantity
+*pc_linecost
+UF*serv_no
+UF*sj_job_no
+UF*part_code
+PART_CHARGE charged to PART
+PART
+P *part_code
+*part_description
+*part_unit_cost
+*part_stock
+F*vendor_id
+VENDOR supplies PART
+VENDOR
+P *vendor_id
+U *vendor_name
+*vendor_address
+*vendor_phone
+
+
+
+
+
+
+
+Your answers for this task (Task 1) must be written in an MS Word document or Google document. To push the document to GitLab (a minimum of two pushes as you work) download or print the document as a pdf file and name the file as T1-ma-ra.pdf.
+For this task, you are required to write the relational algebra operations for the following queries (your answer must show an understanding of query efficiency). Please ensure you copy and paste each of the questions below (a) - (c) into your answer document.
+List of symbols for copying/pasting as you enter your answers below:
+project: π, select: σ, join: ⨝, intersect: ⋂, union: ⋃, minus: -
+Example
+Question:
+List the vehicle vin and make for all vehicles which were manufactured in the year 2021.
+Answer:
+R = π veh_vin, veh_make (σ veh_year= ''2021" VEHICLE)
+OR
+R1 = σ veh_year= ''2021" VEHICLE
+R = π veh_vin, veh_make (R1)
+a.	List the part code, part description for all parts supplied by the vendor named "Supercheap Auto".
+π part_code, part_description 
+( σ vendor_id = ( π vendor_id ( σ vendor_name = 'Supercheap Auto' (VENDOR) 
+)
+ ) (PART) 
+)
+[1 mark]
+
+
+
+b.	List the part code and part description for all parts which have not been used in any service.
+π part_code, 
+part_description ( 
+PART - (PART_CHARGE ⨝ PART) )
+[2 marks]
+c.	List the customer’s name, phone number and vehicle registration number (rego) for all owners of vehicles who had their vehicle serviced on 22/02/2024 and where the service kilometres were greater than 80,000 km.
+π cust_name, cust_phone, veh_rego (
+(CUSTOMER ⨝ VEHICLE) ⨝ (
+σ serv_date = '2024-02-22' ∧ serv_kms > 80000 (
+SERVICE
+)
+)
+)
+[3 marks]
+
